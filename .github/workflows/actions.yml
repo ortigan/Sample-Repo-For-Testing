@@ -22,7 +22,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: |
-        call>.env
+        New-Item .env
         echo INFURA_ID=${{ secrets.INFURA_ID }} >> .env
         echo INFURA_KEY=${{ secrets.INFURA_KEY }} >> .env
         echo SUPABASE_URL=${{ secrets.SUPABASE_URL }} >> .env
