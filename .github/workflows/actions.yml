@@ -1,0 +1,39 @@
+name: Project Actions CI
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: self-hosted
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: |
+        touch .env
+        echo INFURA_ID=${{ secrets.INFURA_ID }} >> .env
+        echo INFURA_KEY=${{ secrets.INFURA_KEY }} >> .env
+        echo SUPABASE_URL=${{ secrets.SUPABASE_URL }} >> .env
+        echo SUPABASE_KEY=${{ secrets.SUPABASE_KEY }} >> .env
+        echo PINATA_KEY=${{ secrets.PINATA_KEY }} >> .env
+        echo PINATA_SECRET=${{ secrets.PINATA_SECRET }} >> .env
+        echo GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> .env
+        echo GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} >> .env
+        echo CLOUDINARY_CLOUD_NAME=${{ secrets.CLOUDINARY_CLOUD_NAME }} >> .env
+        echo CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }} >> .env
+        echo CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }} >> .env
+        echo FORMAIL_API_KEY=${{ secrets.FORMAIL_API_KEY }} >> .env
+    - run: npm i
+    - run: npm run generate --if-present
