@@ -119,6 +119,7 @@ export default {
       this.selectedBook = book;
     },
     async confirmDelete() {
+      console.log("gg")
       this.isLoading = true;
       const { data, error } = await client
         .from("files")
